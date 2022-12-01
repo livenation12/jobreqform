@@ -73,16 +73,180 @@
 				</tr>
 			</div>	
 	</table>
+<hr>
+	<table>
+		<div class="container">
+		
+			<tr>
+					<p>Equipment Issue/s: <i>(Check all that apply)</i></p>
+				<td>
+					<input type="checkbox" name="issues[]">
+					<label>Application crash or OS blue screen</label>
+				</td>
+				<td>
+					<input type="checkbox" name="issues[]">
+					<label>Application crash or OS blue screen</label>
+				</td>
+				<td>
+					<input type="checkbox" name="issues[]">
+					<label>Damaged motherboard</label>
+				</td>		
+			</tr>	 
+			<tr>
+				<td>
+					<input type="checkbox" name="issues[]">
+					<label>Application won't operate</label>
+				</td>
+				<td>
+					<input type="checkbox" name="issues[]">
+					<label>No display</label>
+				</td>
+				<td>
+					<input type="checkbox" name="issues[]">
+					<label>Damaged Hard drive</label>
+				</td>	
+			</tr>
+			<tr>
+				<td>
+					<input type="checkbox" name="issues[]">
+					<label>Unserviceable</label>
+				</td>
+				<td>
+					<input type="checkbox" name="issues[]">
+					<label>Printer bunking</label>
+				</td>
+				<td>
+					<input type="checkbox" name="issues[]">
+					<label>Damaged memory</label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="checkbox" name="issues[]">
+					<label>Equipment won't boot or power up</label>
+				</td>
+				<td>
+					<input type="checkbox" name="issues[]">
+					<label>Equipment shuts down or reboots</label>
+				</td>
+				<td>
+					<input type="checkbox" name="issues[]">
+					<label>Display issue</label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="checkbox" name="issues[]">
+					<label>Can't access the internet</label>
+				</td>
+				<td>
+					<input type="checkbox" name="issues[]">
+					<label>Virus or malware</label>
+				</td>
+				<td>
+					<input type="checkbox" name="issues[]">
+					<label>Equipment is slow</label>
+				</td>
+			</tr>
+			<tr>
+					<td>
+					<input type="checkbox" name="issues[]">
+					<label>Won't print</label>
+				</td>
+				<td>
+					<input type="checkbox" name="issues[]">
+					<label>No internet connection</label>
+				</td>
+				<td>
+					<input type="checkbox" name="issues[]">
+					<label>Handset no dial tone</label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="checkbox" name="issues[]">
+					<label>Application won't open</label>
+				</td>
+				<td>
+					<input type="checkbox" name="issues[]">
+					<label>Installation(OS, Apps, Internet)</label>
+				</td>
+				<td>
+					<input type="checkbox" name="issues[]">
+					<label>Inspection</label>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label>Others:</label>
+					<input type="text" name="issues[]">
+				</td>
 
-	<table border="1" width="300">
-		<div>
-		<p><i></i>Equipment Issue/s: (Check all that apply)</i></p>
-	</div>
-		<input type="checkbox" name="">
-		<label>Application crash or OS blue screen</label>
-
+				</tr>
+			<tr>
+				<td>
+				<p>Required Service: <i>(Check all that apply)</i></p>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label>Diagnostic</label>
+					<input type="text" name="service[]">
+				</td>
+				<td>
+					<label>Computer repair</label>
+					<input type="text" name="service[]">
+				</td>
+				<td>
+					<label>Printer setup</label>
+					<input type="text" name="service[]">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label>Computer Format</label>
+					<input type="text" name="service[]">
+				</td>
+				<td>
+					<label>Change hardware</label>
+					<input type="text" name="service[]">
+				</td>
+				<td>
+					<label>Printer reset</label>
+					<input type="text" name="service[]">
+				</td>
+			</tr>
+			<tr>
+			<td>
+					<label>Data recovery</label>
+					<input type="text" name="service[]">
+				</td>
+				<td>
+					<label>Computer upgrade</label>
+					<input type="text" name="service[]">
+				</td>
+				<td>
+					<label>Router setup</label>
+					<input type="text" name="service[]">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label>Virus/ Malware removal</label>
+					<input type="text" name="service[]">
+				</td>
+				<td>
+					<label>Printer repair</label>
+					<input type="text" name="service[]">
+				</td>
+				<td>
+					<label>Router reset</label>
+					<input type="text" name="service[]">
+				</td>
+			</tr>
+			</form>
+		</div>
 	</table>
 
-</form>
 </body>
 </html>
