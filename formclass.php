@@ -43,13 +43,31 @@ class RequestForm {
 			}
 		}
 	}	
-		public function set_admindata($array){
-			if(isset($_SESSION)){
-				session_start();
+			public function logout(){
+	$conn = $this->openConnection();
+	if(!isset($_SESSION['variable'])){
+		session_start();
 
-				$_SESSION['admindata'] = array();
-			}
+		
 		}
+		$_SESSION['admindata'] = null;
+		unset($_SESSION['admindata']);
+	}
+
+	public function set_session($array){
+		if(!isset($_SESSION)){
+			session_start();
+		}
+		$_SESSION['admindata'] = array("adminkey" => $array['adminname']. "". $array['account_id'],"department" => $array['department']);
+		return $_SESSION['admindata'];
+	}
+	public function get_session(){
+		if(!isset($_SESSION)){
+			session_start();
+
+		}
+		return $_SESSION['admindata'];
+	}
 		public function userInsertData(){
 			if (isset($_POST['submit'])) {
 				$req_dept = $_POST['deptname'];
@@ -86,25 +104,25 @@ class RequestForm {
 			}
 		}
 	}
-	// }
-	// 	public function set_userdata($array){ 
-	// 		if (!isset($_SESSION)) {
-	// 			session_start();
-	// 		}
+	public function addAdmin(){
+		if(isset($_POST['add'])){
+			$adminname = $_POST['adminname'];
+			$account_id = $_POST['account_id'];
+			$password = $_POST['password'];
+			$department = $_POST['department'];
 
-	// 			$_SESSION['userdata'] = array(
-	// 			"fullname" => $array['firstname']. $array['lastname']. "",
-	// 		 	"access" => $array['access']);
-	// 			return $_SESSION['userdata'];  
-	// 	}
+			$conn = $this->openConnection();
+			$stmt = $conn->prepare("INSERT INTO admin(adminname, account_id, password, department) VALUES(?,?,?,?)");
+			$stmt->execute([$adminname,$account_id,$password,$department]);
+			$added = $stmt->rowCount();
+			if($added > 0){
+				echo "added";
+			}
+				
+			}
+		}
 
-	// 	public function get_userdata(){
 
-	// 		if (!isset($_SESSION)) {
-	// 			session_start();
-	// 	}
-	// 	return $_SESSION['userdata'];
-	// }
-	}
+}
 
 $class = new RequestForm();

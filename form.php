@@ -206,6 +206,8 @@ $class->userInsertData();
 					<label>Diagnostic</label>
 				</td>
 				<td>
+
+					
 					<input type="checkbox" name="services[]" value="Computer repair">
 					<label>Computer repair</label>
 					
