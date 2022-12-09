@@ -1,7 +1,14 @@
 <?php
+session_start();
 require_once('formclass.php');
 $class->userInsertData();
+$user = $class->getUser();
 
+if(isset($_SESSION['user_name'])){
+	echo "Fill this form to proceed". $_SESSION['user_name'];	
+	}else{
+		echo "something is wrong";
+	}
 ?>
 
 
@@ -13,84 +20,141 @@ $class->userInsertData();
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style>
+	</style>
 	<title>Services Request Form</title>
 </head>
-<body>
-<div>
-	<p>Request for <span style="font-size: 20px;">IT SERVICEsS</p>
-		<hr>
+<body class="m-5 p-5">
+<div class="container">
+<div class="fw-semibold">
+
+	<p class="fs-5">Request for <span class="fs-3">IT SERVICES</span></p>
+	<p>Use this form to request for IT equipment and other related services. Completing a request form is not a guarantee service will be granted.</p>
+</div>
 	<table>
-		<div>
+		<div class="border border-5">
 		<tr>
 			<form action="" method="post">
 			<td>
-				<label>Requesting Dept/Office:</label>
+		<div class="container mt-3">
+		<div class="form-floating mb-3 mt-3">
 				<input type="text" name="deptname" class="form-control">
+				<label>Requesting Dept/Office:</label>
 			</td>
-			<td>
-				<label>Dept/Office Account ID:</label>
-				<input type="text" name="deptid" class="form-control">
-			</td> 
-			<td>
-				<label>Contact/Local #:</label>
-				<input type="text" name="contact" class="form-control">
-			</td>
-			<td>
-				<label>Date:</label>
-				<input type="date" name="date_sub" hidden>
-			</td>
-			
-		</tr>
+		</div>
 	</div>
-			<div>
-				<tr>
-					<td>
+
+			<td>
+		<div class="container mt-3">
+		<div class="form-floating mb-3 mt-3">
+				<input type="text" name="deptid" class="form-control" >
+				<label>Dept/Office Account ID:</label>
+			</div>
+		</div>
+			</td>
+
+			<td>
+				<div class="container mt-3">
+		<div class="form-floating mb-3 mt-3">
+				<input type="text" name="contact" class="form-control">
+				<label>Contact/Local #:</label>
+			</div>
+		</div>
+			</td>
+
+			<td>
+				<div class="container mt-3">
+		<div class="form-floating mb-3 mt-3">
+				<input type="date" name="date_sub" class="form-control">
+				<label>Date:</label>
+			</div>
+		</div>
+			</td>
+		</tr>
+		
+		<tr>
+			<td>
+				<div class="container">
+				<table>
+					
 						<label>Name of Dept/Office Head:</label>
-						<input type="text" name="deptheadfname" class="form-control" placeholder="Firstname" required>
+						<tr><td>
+							<input type="text" name="deptheadfname" class="form-control" placeholder="Firstname" required>
+						</td>
+						<td>
 						<input type="text" name="deptheadmidname" class="form-control" placeholder="Middlename/Optional">
-						<input type="text" name="deptheadlname" class="form-control" placeholder="Lastname" required>
-						<input type="text" name="deptheadsuffix" class="form-control" placeholder="Suffix/Optional">
-					</td>
-					<td>
+						</td>
+						<td>
+						<input type="text" name="deptheadlname" class="form-control"  placeholder="Lastname" required>
+						</td>
+						<td>
+						<input type="text" name="deptheadsuffix" class="form-control m" placeholder="Suffix/Optional">
+					</div></td>
+				</tr>
+				</table>
+			</td>
+					<td colspan="2">
+						<div class="container mt-5">
+				<div class="form-floating mb-3 mt-1">
+						
+						<input type="text" name="dept_head_sign" value="---" readonly class="form-control">
 						<label>Signature of Requesting Dept/Office Head:</label>
-						<input type="text" name="dept_head_sign" placeholder="comply later" readonly class="form-control">
+					</div></div>
 					</td>
 				</tr>
-			</div>
-			<div>
 				<tr>
 					<td>
+						<div class="container">
+						<table>
+							
 						<label>Name of End User:</label>
+						<tr><td>
 						<input type="text" name="euserfname" class="form-control" placeholder="Firstname" required>
-						<input type="text" name="eusermidname" class="form-control" placeholder="Middlename" >
+						</td>
+						<td>
+						<input type="text" name="eusermidname" class="form-control" placeholder="Middlename">
+						</td><td>
 						<input type="text" name="euserlname" class="form-control" placeholder="Lastname" required>
+						</td><td>
 						<input type="text" name="eusersuffix" class="form-control" placeholder="Suffix/Optional">
+					</div></td>
+					</table>
 					</td>
-					<td>
-						<label>Position:</label>
+					<td colspan="2">
+						<div class="container mt-5">
+						<div class="form-floating mb-3 mt-3">
 						<input type="text" name="position" class="form-control" required>
+						<label>Position:</label>
+					
 					</td>
 				</tr>
 				<tr>	
 					<td>
-						<label>Equipment Type/Description:</label>
+						<div class="container mt-3">
+		<div class="form-floating mb-3 mt-3">
+						
 						<input type="text" name="equip_type" class="form-control" required>
+						<label>Equipment Type/Description:</label>
+					</div>
+				</div>
 					</td>
-					<td>
-						<label>Equipment Serial Number:</label>
+					<td colspan="2">
+						<div class="container mt-3">
+		<div class="form-floating mb-3 mt-3">
 						<input type="text" name="equip_number" class="form-control" required>
+						<label>Equipment Serial Number:</label>
+					</div></div>
 					</td>
-				
+				</tr>
+			</div>
 			</div>	
+
 	</table>
 	
-<hr>
-
 	<table>
-		<div class="container">
-		
+		<div class="container mt-4 ml-3">
 			<tr>
-					<p>Equipment Issue/s: <i>(Check all that apply)</i></p>
+					<p class="fw-semibold">Equipment Issue/s: </b><i>(Check all that apply)</i></p>
 				<td>
 					<input type="checkbox" name="issues[]" value="Application crash or OS blue screen">
 					<label>Application crash or OS blue screen</label>
@@ -194,22 +258,13 @@ $class->userInsertData();
 					<input type="text" name="issues[]">
 				</td>
 
-				</tr>
-			<tr>
-				<td>
-				<p>Required Services: <i>(Check all that apply)</i></p>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<input type="checkbox" name="services[]" value="Diagnostic">
-					<label>Diagnostic</label>
-				</td>
-				<td>
-
-					
-					<input type="checkbox" name="services[]" value="Computer repair">
-					<label>Computer repair</label>
+				</tr> <tr> <td> <div class="container mt-4"> <p
+				class="fw-semibold">Required Services: <i>(Check all that
+				apply)</i></p> </div> </td> </tr> <tr> <td> <input
+				type="checkbox" name="services[]" value="Diagnostic">
+				<label>Diagnostic</label> </td> <td> <input
+				type="checkbox" name="services[]" value="Computer repair">
+				<label>Computer repair</label>
 					
 				</td>
 				<td>
@@ -273,14 +328,12 @@ $class->userInsertData();
 			<tr>
 
 					<td> 
-						<input type="submit" name="submit">
+						<button type="submit" name="submit" class="btn btn-success">Submit Request</button>
+						<a href="index.php"> <button class="btn btn-danger">Back to Home</button></a>
 		</form>
 					</td>
 			</tr>
-				
-			
-			
-		</div>
+		</div></div>
 	</table>
 </div>
 
