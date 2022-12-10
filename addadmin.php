@@ -2,7 +2,7 @@
 <?php
 require_once('formclass.php');
 $class->addAdmin();
-$admindetails = $class->get_session();
+
 
 
 ?>
@@ -16,6 +16,7 @@ $admindetails = $class->get_session();
 	<title></title>
 </head>
 <body>
+	<h1>Add Admin</h1>
 		<form action="" method="post">
 	<label>Admin Name:</label>
 	<input type="text" name="adminname">
@@ -25,10 +26,7 @@ $admindetails = $class->get_session();
 	><p></p>
 	<label>Password:</label>
 	<input type="password" name="password">
-	<p></p>
-	<label>Department:</label>
-	<input type="text" name="department">
-	<p></p>
+	<p></p>	
 	<input type="submit" name="add" value="Add">
 	</form>
 	
