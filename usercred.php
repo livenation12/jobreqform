@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once('formclass.php');
-header('Location: reqform.php');
+$class->getUser();
 ?>
 
 

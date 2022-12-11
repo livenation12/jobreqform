@@ -1,5 +1,6 @@
 	<?php
 require_once('formclass.php');
+$class->getAdmin();
 $class->adminLogin();
 ?>
 
@@ -16,9 +17,7 @@ $class->adminLogin();
 	<label>Admin Name:</label>
 	<input type="text" name="adminname">
 	<p></p>
-	<label>Account ID:</label>
-	<input type="text" name="account_id"
-	><p></p>
+	<p></p>
 	<label>Password:</label>
 	<input type="password" name="password"><p></p>
 	<input type="submit" name="submit" value="Enter">

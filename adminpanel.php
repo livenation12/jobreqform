@@ -1,13 +1,10 @@
 <?php
-session_start();
 require_once("formclass.php");
-$class->get_Admin();
-  if(isset($_SESSION['adminname'])){
+$admin = $class->getAdmin();
+$admindetails = $class->get_admindata();
 
-    
-}else{
-  echo "something is wrong";  
-}
+
+  
 ?>
 <!DOCTYPE html>
 <html>

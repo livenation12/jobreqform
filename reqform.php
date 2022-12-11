@@ -2,13 +2,12 @@
 session_start();
 require_once('formclass.php');
 $class->userInsertData();
-$user = $class->getUser();
+$class->getUser();
 
-if(isset($_SESSION['user_name'])){
-	echo "Fill this form to proceed". $_SESSION['user_name'];	
-	}else{
-		echo "something is wrong";
-	}
+
+	echo "Fill this form to proceed ". $_SESSION['user_name'];
+		
+	
 ?>
 
 
@@ -27,6 +26,9 @@ if(isset($_SESSION['user_name'])){
 <body class="m-5 p-5">
 <div class="container">
 <div class="fw-semibold">
+
+
+	
 
 	<p class="fs-5">Request for <span class="fs-3">IT SERVICES</span></p>
 	<p>Use this form to request for IT equipment and other related services. Completing a request form is not a guarantee service will be granted.</p>
@@ -329,7 +331,7 @@ if(isset($_SESSION['user_name'])){
 
 					<td> 
 						<button type="submit" name="submit" class="btn btn-success">Submit Request</button>
-						<a href="index.php"> <button class="btn btn-danger">Back to Home</button></a>
+						<a href="index.php"> <button class="btn btn-danger" name="backhome">Back to Home</button></a>
 		</form>
 					</td>
 			</tr>

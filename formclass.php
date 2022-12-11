@@ -20,9 +20,8 @@ class RequestForm {
 		public function closeConnection(){	
 			$this->con = null;
 		}
-//End of Connection Functions//
-				public function userInsertData(){
-					if (isset($_POST['submit'])) {
+		public function userInsertData(){
+			if (isset($_POST['submit'])) {
 				$fullname = $_SESSION['user_name'];	
 				$req_dept = $_POST['deptname'];
 				$dept_acc_id = $_POST['deptid'];
@@ -58,20 +57,9 @@ class RequestForm {
 			}
 		}	
 	}
-
-	// public function userCredentials(){
-	// 	if(isset($_GET['submit'])){
-	// 		$fname = $_GET['fname'];
-	// 		$midname = $_GET['midname'];
-	// 		$lname = $_GET['lname'];
-	// 		$suffix = $_GET['suffix'];
-	// 		$fullname = $fname. " ". $midname. " ". $lname. " ". $suffix;
-	// 		}
-
-	// 	}
 	
-	public function getUser(){
-		if(isset($_GET['submit'])){
+		public function getUser(){
+			if(isset($_GET['submit'])){
 			$fname = $_GET['fname'];
 			$midname = $_GET['midname'];
 			$lname = $_GET['lname'];
@@ -91,76 +79,71 @@ class RequestForm {
 			}	
 		}
 	}
-	public function backhome(){
-
+	
+	public function set_admindata($array){
+		if(!isset($_SESSION)){
+			session_start();
+		}
+		$_SESSION['admindata'] = $array['adminname'];
+		return $_SESSION['admindata'];
 	}
-	// public function set_userdata($array){
-	// 	if(!isset($_SESSION)){
-	// 		session_start();
-	// 	}
-	// 	$_SESSION['userdata'] = 
-	// 	return $_SESSION['userdata'];
-	// }
 
-	// public function get_userdata(){
-	// 	if(!isset($_SESSION)){
-	// 		session_start();
-	// 	}
-	// 	return $_SESSION['userdata'];
-	// }
-
-
-
+	public function get_admindata(){
+		if(!isset($_SESSION)){
+			session_start();
+		}
+		if(isset($_SESSION['userdata'])){
+			return $_SESSION['admindata'];
+		}else{
+		
+		return null;
+	}
+}
 
 //Admin functions start//
 		public function adminLogin(){
 
 			if (isset($_POST['submit'])) {
 			$adminname = $_POST['adminname'];
-			$account_id = $_POST['account_id'];
 			$password = $_POST['password'];
 
-
 			$conn = $this->openConnection();
-			$stmt = $conn->prepare("SELECT * FROM admin WHERE adminname = ? AND account_id = ? AND password = ?");
-			$stmt->execute([$adminname, $account_id, $password]);
+			$stmt = $conn->prepare("SELECT * FROM admin WHERE adminname = ? AND password = ?");
+			$stmt->execute([$adminname,$password]);
 			$admin = $stmt->fetch();
-			$adminNum = $stmt->rowCount();
-		if($adminNum > 0){
-				 header("Location: adminpanel.php");
-			// session_start();
-			// $_SESSION['adminname'] = $admin['adminname'];
-			// echo "welcome ". $_SESSION['adminname'];
-			// header("Location: adminpanel.php");
-		//  		echo "Welcome". $admin['adminname']. $admin['account_id'];	
-		//  	if(!isset($_SESSION)){
-		// 		session_start();
-				$_SESSION['adminname'] = $adminname;
+			$count = $stmt->rowCount();
 			
+			if($count > 0 ){
+				header("Location: adminpanel.php");
+
+		//  		echo "Welcome". $admin['adminname']. $admin['account_id'];
+
 			}else{
 				echo "Incorrect account_id nor password";
-			}
-		
-		
-	}	
-
+		}
+	}
 }
 
-	public function get_Admin(){
+	public function getAdmin(){
 		if(isset($_POST['submit'])){
-				$adminname = $_POST['adminname'];
+			$adminname = $_POST['adminname'];
+			$password = $_POST['password'];
 			$conn = $this->openConnection();
-			$stmt = $conn->prepare("SELECT * FROM admin WHERE adminname = ?");
-			$stmt->execute([$adminname]);
-			$_SESSION['adminname'] = $adminname;
-				echo $_SESSION['adminname'];
+			$stmt = $conn->prepare("SELECT * FROM admin WHERE adminname = ? AND password = ?");
+			$stmt->execute([$adminname, $password]);
+			$admin = $stmt->fetch();
+			$count = $stmt->rowCount();
+			if($count > 0){
+				echo "welcome". $admin['adminname'];
+				$this->set_admindata($admin); 
+
 			}else{
-			echo "failed";
-			}	
+				return 0;
+			}
 		}
+	}
 	
 			
-		
 	public function addAdmin(){
 		if(isset($_POST['add'])){
 			$adminname = $_POST['adminname'];
@@ -191,48 +174,21 @@ class RequestForm {
 		return $count;
 	}
 }
-	// public function try(){
-	// 	if(isset($_POST['try'])){
-	// 		$status = $_POST['status'];
-	// 		$conn = $this->openConnection();
-	// 		$stmt = $conn->prepare("INSERT INTO users(status) VALUES(?)");
-	// 		$stmt->execute([$status]);
-	// 		$count = $stmt->rowCount();
-	// 		if ($count > 0 ) {
-	// 			echo "added";
-	// 		}
-	// 	}
-	// }
+	public function logout(){
+		if(!isset($_SESSION)){
+		session_start();
+		}
+		$_SESSION['admindata'] = null;
+		unset($_SESSION['admindata']);
+	}
 
-	// public function set_session($array){
-	// 	if(!isset($_SESSION)){
-	// 		session_start();
-	// 	}
-	// 	$_SESSION['admindata'] = array("adminkey" => $array['adminname']. "". $array['account_id']);
-	// 	return $_SESSION['admindata'];
-	// }
-	// public function get_session(){
-	// 	if(!isset($_SESSION)){
-	// 		session_start();
 
-	// 	}
-	// 	return $_SESSION['admindata'];
-	// }
-	
-	// 	public function logout(){
-	// $conn = $this->openConnection();
-	// if(!isset($_SESSION['variable'])){
-	// 	session_start();
-		
-	// 	}
-	// 	$_SESSION['admindata'] = null;
-	// 	unset($_SESSION['admindata']);
-	// }
+
 	public function getPendings(){
 		$conn = $this->openConnection();
 		$stmt = $conn->prepare("SELECT * FROM users WHERE status = :status");
 		$stmt->execute(['status' => 'pending']);
-		$pendings = $stmt->fetch();
+		$pendings = $stmt->fetchAll();
 		$count = $stmt->rowCount();
 		if($count > 0 ){
 			return $pendings;
@@ -240,7 +196,36 @@ class RequestForm {
 			echo "theres no pending request/s yet";
 		}
 	}
+
+	public function updateStatus(){
+		if(isset($_GET['update'])){
+			$denied = $_GET['denied'];
+			$approved = $_GET['approved'];
+			$conn = $this->openConnection();
+			$stmt = $conn->prepare("UPDATE users SET status = ? WHERE id = ?");
+
+
+		}
+	}
+
+	public function getForm($id){
+			$conn = $this->openConnection();
+			$stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
+			$stmt->execute([$id]);
+			$form = $stmt->fetch();
+			$count = $stmt->rowCount();
+			if($count > 0){
+				return $form;
+			}else{
+				return FALSE;
+			}
+	}
+
+
+
+
 }
+
 
 
 
