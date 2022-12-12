@@ -1,7 +1,13 @@
 <?php
+session_start();
 require_once('formclass.php');
 $pendings = $class->getPendings();
 $status = $class->updateStatus();
+
+if(!isset($_SESSION)){
+  header("Location: adminlogin.php");
+  }
+  echo "welcome". $_SESSION['adminname'];
 ?>
 
 
@@ -23,8 +29,9 @@ $status = $class->updateStatus();
 <div class="container">
 <div class="card" style="width: 20rem; padding: 10px; background-color: gray;">
   <div class="card-header">
-  	<form method="post">
-    <?php echo $pending['user_name']; ?>
+  	<?php echo $pending['user_name']; ?>
+  	<form method="post"><h1><?php echo $pending['id'] ?></h1>
+    
   </div>
   <ul class="list-group list-group-flush">
   	
@@ -40,10 +47,10 @@ $status = $class->updateStatus();
     <li class="list-group-item"><?php echo $pending['date_added']; ?></li>
   </ul>
 </div>
-	
-	<input type="hidden" value="<?php $pending['id']?>"	name="id">
+		
+	<input type="hidden" name="id" value="<?php $pending['id']?>">
 	<select name="status">
-		<option value=""><?php echo $pending['status'];?></option>
+		<option value="---"></option>
 		<option value="denied">DENIED</option>
 		<option value="approved">APPROVED</option>
 	</select>

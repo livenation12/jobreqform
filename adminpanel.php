@@ -1,7 +1,16 @@
 <?php
+session_start();
 require_once("formclass.php");
-$admin = $class->getAdmin();
-$admindetails = $class->get_admindata();
+$admin = $class->adminLogin();
+// $admindetails = $class->get_admindata();
+
+if(!isset($_SESSION['adminname'])){
+  header("Location: adminlogin.php");
+  }
+  echo "welcome". $_SESSION['adminname'];
+
+
+
 
 
   
@@ -25,6 +34,7 @@ $admindetails = $class->get_admindata();
 <a href="adminmain.php">Pendings</a>
 <a href="approved.php">APPROVED</a>
 <a href="denied.php">DENIED</a>
+<a href="logout.php">LOGOUT</a>
 </div>
 </nav>
 </body>

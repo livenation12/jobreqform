@@ -1,7 +1,12 @@
 <?php
+session_start();
 require_once('formclass.php');
 $approved = $class->getApproved();
 
+if(!isset($_SESSION)){
+  header("Location: adminlogin.php");
+  }
+  echo "welcome". $_SESSION['adminname'];
 ?>
 
 

@@ -1,3 +1,9 @@
+<?php
+require_once('formclass.php');
+?>
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
