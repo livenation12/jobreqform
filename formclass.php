@@ -168,6 +168,8 @@ class RequestForm {
 			$conn = $this->openConnection();
 			$stmt = $conn->prepare("INSERT INTO admin(adminname, account_id, password) VALUES(?,?,?)");
 			$stmt->execute([$adminname,$account_id,$password]);
+
+
 			echo "added";
 			
 			
@@ -218,8 +220,7 @@ class RequestForm {
 		$count = $stmt->rowCount();
 		if($count > 0 ){
 			return $approved;
-		}else{
-			echo "theres no approved request/s yet";
+
 		}
 	}
 	public function getDenied(){
@@ -237,11 +238,10 @@ class RequestForm {
 
 	public function updateStatus(){
 		if(isset($_POST['update'])){
-			$id = $_POST['id'];
-			$status = $_POST['status'];
+
 			$conn = $this->openConnection();
-			$stmt = $conn->prepare("UPDATE users SET status = ? WHERE id = ?");
-			$stmt->execute([$status, $id]);
+			$stmt = $conn->prepare("UPDATE users SET status = :status WHERE id = :id");
+			$stmt->execute(["status" => $_POST['status'], "id" => $_POST['id']]);
 			$count = $stmt->rowCount();
 			if($count > 0){
 				"successfully altered";
@@ -252,31 +252,6 @@ class RequestForm {
 
 		}
 	}
-
-	// public function getForm($id){
-	// 		$conn = $this->openConnection();
-	// 		$stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
-	// 		$stmt->execute([$id]);
-	// 		$form = $stmt->fetch();
-	// 		$count = $stmt->rowCount();
-	// 		if($count > 0){
-	// 			return $form;
-	// 		}else{
-	// 			return FALSE;
-	// 		}
-	// }
-	// public function getId(){
-	// 	if(isset($_GET['id'])){
-	// 		$id = $_GET['id'];
-	// 		$conn = $this->openConnection();
-	// 		$stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
-	// 		$stmt->execute([$id]);
-	// 		$fetch = $stmt->fetch();
-	// 		return $fetch;
-	// 	}
-	// }
-
-
 
 
 }

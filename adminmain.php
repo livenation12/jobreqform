@@ -25,12 +25,12 @@ if(!isset($_SESSION)){
 	
 
 ?>
-<form method="post" action="">
+
 <div class="container">
 <div class="card" style="width: 20rem; padding: 10px; background-color: gray;">
   <div class="card-header">
   	<?php echo $pending['user_name']; ?>
-  	<form method="post"><h1><?php echo $pending['id'] ?></h1>
+  	<form method="post"><h1><?php echo $pending['id']; ?></h1>
     
   </div>
   <ul class="list-group list-group-flush">
@@ -48,13 +48,15 @@ if(!isset($_SESSION)){
   </ul>
 </div>
 		
-	<input type="hidden" name="id" value="<?php $pending['id']?>">
+<form method="post">
+
+	<input type="hidden" name="id" value="<?php echo $pending['id'];?>">
 	<select name="status">
-		<option value="---"></option>
-		<option value="denied">DENIED</option>
+		<option>---</option>
 		<option value="approved">APPROVED</option>
+		<option value="denied">DENIED</option>
 	</select>
-	<input name="update" type="submit" value="UPDATE">
+	<input type="submit" name="update" value="UPDATE">
 	</form>
 	</div>
 

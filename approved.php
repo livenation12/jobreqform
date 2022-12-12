@@ -21,7 +21,14 @@ if(!isset($_SESSION)){
 </head>
 <body>
 	<h1>APPROVED REQUESTS</h1>
-<?php foreach ($approved as $row) {
+<?php
+switch ($approved) {
+	case null:
+		echo "empty";
+		break;
+	
+	default:
+ foreach ($approved as $row) {
 	
 
 ?>
@@ -56,11 +63,13 @@ if(!isset($_SESSION)){
 	<input name="update" type="submit" value="UPDATE">
 	</form>
 	</div>
+ <?php
+}
+		break;
 
 
 
-
-  <?php } ?>
+  } ?>
 
 </body>
 </html>

@@ -5,7 +5,7 @@ require_once('formclass.php');
 $class->addAdmin();
 
 
-if(isset($_SESSION['adminname'])){
+if(!isset($_SESSION['adminname'])){
   header("Location: adminlogin.php");
   }
   echo "welcome". $_SESSION['adminname'];

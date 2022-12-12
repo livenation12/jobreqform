@@ -23,7 +23,15 @@ if(!isset($_SESSION)){
 </head>
 <body>
 	<h1>DENIED REQUESTS</h1>
-<?php foreach ($denied as $row) {
+<?php 
+
+switch($denied){
+	case null:
+	echo "empty";
+	break;
+
+	default:
+foreach ($denied as $row) {
 	
 
 ?>
@@ -62,7 +70,15 @@ if(!isset($_SESSION)){
 
 
 
-  <?php } ?>
+  <?php
+
+
+   }
+   break;
+
+
+}
+   ?>
 
 </body>
 </html>
