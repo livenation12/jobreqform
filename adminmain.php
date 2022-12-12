@@ -1,7 +1,7 @@
 <?php
 require_once('formclass.php');
 $pendings = $class->getPendings();
-
+$status = $class->updateStatus();
 ?>
 
 
@@ -19,13 +19,15 @@ $pendings = $class->getPendings();
 	
 
 ?>
+<form method="post" action="">
 <div class="container">
 <div class="card" style="width: 20rem; padding: 10px; background-color: gray;">
   <div class="card-header">
+  	<form method="post">
     <?php echo $pending['user_name']; ?>
   </div>
   <ul class="list-group list-group-flush">
-  	<p><?php $id = $pending['id']?>
+  	
     <li class="list-group-item"><?php echo $pending['req_dept']; ?></li>
     <li class="list-group-item"><?php echo $pending['contact']; ?></li>
     <li class="list-group-item"><?php echo $pending['dept_head_fullname']; ?></li>
@@ -38,12 +40,14 @@ $pendings = $class->getPendings();
     <li class="list-group-item"><?php echo $pending['date_added']; ?></li>
   </ul>
 </div>
-	<form method="post">
-	<select>
-		<option name="denied" value="denied">DENIED</option>
-		<option name="approve" value="approved">APPROVED</option>
+	
+	<input type="hidden" value="<?php $pending['id']?>"	name="id">
+	<select name="status">
+		<option value=""><?php echo $pending['status'];?></option>
+		<option value="denied">DENIED</option>
+		<option value="approved">APPROVED</option>
 	</select>
-	<button name="update" type="submit">UPDATE</button>
+	<input name="update" type="submit" value="UPDATE">
 	</form>
 	</div>
 
