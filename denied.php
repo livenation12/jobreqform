@@ -35,11 +35,10 @@ foreach ($denied as $row) {
 	
 
 ?>
-<form method="post" action="">
 <div class="container">
 <div class="card" style="width: 20rem; padding: 10px; background-color: gray;">
   <div class="card-header">
-  	<form method="post">
+  
     <?php echo $row['user_name']; ?>
   </div>
   <ul class="list-group list-group-flush">
@@ -56,7 +55,7 @@ foreach ($denied as $row) {
     <li class="list-group-item"><?php echo $row['date_added']; ?></li>
   </ul>
 </div>
-	
+		<form method="get">
 	<input type="hidden" value="<?php $row['id']?>"	name="id">
 	<select name="status">
 		<option value=""><?php echo $row['status'];?></option>
@@ -64,6 +63,7 @@ foreach ($denied as $row) {
 		<option value="approved">APPROVED</option>
 	</select>
 	<input name="update" type="submit" value="UPDATE">
+	<a href="denied.php?id=<?=$row['id']?> "></a>
 	</form>
 	</div>
 

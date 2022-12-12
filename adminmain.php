@@ -21,8 +21,19 @@ if(!isset($_SESSION)){
 </head>
 <body>
 	<h1>PENDING REQUESTS</h1>
-<?php foreach ($pendings as $pending) {
-	
+
+<?php 
+switch($pendings){
+	case null:
+	echo "no pending records yet";
+	break;
+	default:
+
+
+
+
+foreach ($pendings as $pending) {
+
 
 ?>
 
@@ -30,7 +41,7 @@ if(!isset($_SESSION)){
 <div class="card" style="width: 20rem; padding: 10px; background-color: gray;">
   <div class="card-header">
   	<?php echo $pending['user_name']; ?>
-  	<form method="post"><h1><?php echo $pending['id']; ?></h1>
+	<h1><?php echo $pending['id']; ?></h1>
     
   </div>
   <ul class="list-group list-group-flush">
@@ -48,22 +59,27 @@ if(!isset($_SESSION)){
   </ul>
 </div>
 		
-<form method="post">
+<form method="get">
 
 	<input type="hidden" name="id" value="<?php echo $pending['id'];?>">
 	<select name="status">
-		<option>---</option>
+		<option selected disabled>---</option>
 		<option value="approved">APPROVED</option>
 		<option value="denied">DENIED</option>
 	</select>
 	<input type="submit" name="update" value="UPDATE">
+	 <a href="adminmain.php?id=<?=$pending['id']?> "></a>
 	</form>
 	</div>
 
 
 
 
-  <?php } ?>
+  <?php
+}
+break;
+
+   } ?>
 
 </body>
 </html>

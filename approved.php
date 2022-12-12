@@ -2,13 +2,13 @@
 session_start();
 require_once('formclass.php');
 $approved = $class->getApproved();
+$status = $class->updateStatus();
 
 if(!isset($_SESSION)){
   header("Location: adminlogin.php");
   }
   echo "welcome". $_SESSION['adminname'];
 ?>
-
 
 
 <!DOCTYPE html>
@@ -21,23 +21,28 @@ if(!isset($_SESSION)){
 </head>
 <body>
 	<h1>APPROVED REQUESTS</h1>
-<?php
-switch ($approved) {
+
+<?php 
+switch($approved){
 	case null:
-		echo "empty";
-		break;
-	
+	echo "no approved records yet";
+	break;
 	default:
- foreach ($approved as $row) {
-	
+
+
+
+
+foreach ($approved as $row) {
+
 
 ?>
-<form method="post" action="">
+
 <div class="container">
 <div class="card" style="width: 20rem; padding: 10px; background-color: gray;">
   <div class="card-header">
-  	<form method="post">
-    <?php echo $row['user_name']; ?>
+  	<?php echo $row['user_name']; ?>
+  	<h1><?php echo $row['id']; ?></h1>
+    
   </div>
   <ul class="list-group list-group-flush">
   	
@@ -53,23 +58,28 @@ switch ($approved) {
     <li class="list-group-item"><?php echo $row['date_added']; ?></li>
   </ul>
 </div>
-	
-	<input type="hidden" value="<?php $row['id']?>"	name="id">
+		
+<form method="get">
+
+	<input type="hidden" name="id" value="<?php echo $row['id'];?>">
 	<select name="status">
-		<option value=""><?php echo $row['status'];?></option>
-		<option value="denied">DENIED</option>
+		<option selected disabled><?php echo $row['status'];?></option>
 		<option value="approved">APPROVED</option>
+		<option value="denied">DENIED</option>
 	</select>
-	<input name="update" type="submit" value="UPDATE">
+	<input type="submit" name="update" value="UPDATE">
+	 <a href="approved.php?id=<?=$row['id']?> "></a>
 	</form>
 	</div>
- <?php
+
+
+
+
+  <?php
 }
-		break;
+break;
 
-
-
-  } ?>
+   } ?>
 
 </body>
 </html>

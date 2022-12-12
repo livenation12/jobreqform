@@ -231,20 +231,21 @@ class RequestForm {
 		$count = $stmt->rowCount();
 		if($count > 0 ){
 			return $denied;
-		}else{
-			echo "theres no denied request/s yet";
+		
 		}
 	}
 
 	public function updateStatus(){
-		if(isset($_POST['update'])){
-
+		if(isset($_GET['update'])){	
+			$id =  $_GET['id'];
+			$status = $_GET['status'];
+		
 			$conn = $this->openConnection();
-			$stmt = $conn->prepare("UPDATE users SET status = :status WHERE id = :id");
-			$stmt->execute(["status" => $_POST['status'], "id" => $_POST['id']]);
+			$stmt = $conn->prepare("UPDATE `users` SET status = :status WHERE id = :id");
+			$stmt->execute(["status" => $status, "id" => $id]);
 			$count = $stmt->rowCount();
 			if($count > 0){
-				"successfully altered";
+				"successfully updated";
 			}else{
 				"error";
 			}
