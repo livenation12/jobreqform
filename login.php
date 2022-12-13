@@ -1,8 +1,12 @@
 <?php
 session_start();
 require_once('formclass.php');
-// $class->getAdmin();
-$class->adminLogin();
+$user = $class->getUser();
+$directory = $class->redirect();
+
+
+
+
 
 ?>
 
@@ -18,10 +22,10 @@ $class->adminLogin();
 <body>
 
 	<div class="card-header m-5 p-5" style="text-align:center" >
-		<h1>-ADMIN LOGIN-</h1>
+		<h1>-LOGIN-</h1>
 	<form action="" method="post">
-	<label>Admin Name:</label>
-	<input type="text" name="adminname">
+	<label>AccountID:</label>
+	<input type="text" name="account_id">
 	<p></p>
 	<p></p>
 	<label>Password:</label>

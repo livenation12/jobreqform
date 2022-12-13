@@ -20,143 +20,126 @@ class RequestForm {
 		public function closeConnection(){	
 			$this->con = null;
 		}
+		public function getUser(){
+			if(isset($_POST['submit'])){
+			$account_id = $_POST['account_id'];
+			$password = $_POST['password'];
+			$conn = $this->openConnection();
+			$stmt = $conn->prepare("SELECT * FROM `members` WHERE account_id = ? AND password = ?");
+			$stmt->execute([$account_id, $password]);
+			$user = $stmt->fetch();
+			$count = $stmt->rowCount();
+			if($count > 0){
+				echo "welcome". $user['firstname']. " ". $user['lastname'];
+				$this->set_userdata($user);
+
+			}else{
+				"Login Failed";
+			}
+		}
+	}
+	public function set_userdata($array){
+		if(!isset($_SESSION)){
+			session_start();
+		}
+		$_SESSION['userdata'] = array("fullname" => $array['firstname']. " ". $array['lastname'], 
+			"account_id" => $array['account_id'], "contact" => $array['contact'],
+			 "department" => $array['department'], "dept_head_fullname" => $array['dept_head_fullname'], 
+			 "position" => $array['position'], "access" => $array['access']);
+		return $_SESSION['userdata'];
+	}
+
+		public function get_userdata(){	
+		if(!isset($_SESSION)){
+			session_start();
+
+		}
+		if(isset($_SESSION['userdata'])){
+			return $_SESSION['userdata'];
+		}else{
+		
+		return null;
+	}
+}
 		public function userInsertData(){
+			$user = $this->get_userdata();
+		if(isset($user)){
+			$fullname = $user['fullname'];	
+				$req_dept = $user['department'];
+				$dept_acc_id = $user['account_id'];
+				$contact = $user['contact'];	
+				$dept_head_fullname = $user['dept_head_fullname'];
+				$position = $user['position'];
+			
 			if (isset($_POST['submit'])) {
-				$fullname = $_SESSION['user_name'];	
-				$req_dept = $_POST['deptname'];
-				$dept_acc_id = $_POST['deptid'];
-				$contact = $_POST['contact'];
-				// $date_added = date('Y-m-d',strtotime($_POST['date_added']));
-					
-				$dept_head_fname = $_POST['deptheadfname'];
-				$dept_head_midname = $_POST['deptheadmidname'];
-				$dept_head_suffix = $_POST['deptheadsuffix'];
-				$dept_head_lname = $_POST['deptheadlname'];
-				$dept_head_fullname = $dept_head_fname. "". $dept_head_midname. "". $dept_head_lname. "". $dept_head_suffix;
+				
 
 				$euser_fname = $_POST['euserfname'];
 				$euser_midname = $_POST['eusermidname'];
 				$euser_lname = $_POST['euserlname'];
 				$euser_suffix = $_POST['eusersuffix'];
 				$euser_fullname = $euser_fname. " ". $euser_midname. " ". $euser_lname. " ". $euser_suffix;
-				$status = "pending";
 
-				$position = $_POST['position'];
 				$equip_type = $_POST['equip_type'];
 				$equip_num = $_POST['equip_number'];
 				$equip_issues= implode(',', $_POST['issues']);
 				$required_services = implode(',', $_POST['services']);
 				$conn = $this->openConnection();
-				$stmt = $conn->prepare("INSERT INTO users(user_name, req_dept, dept_acc_id, contact,  dept_head_fullname, euser_fullname, position, equip_type, equip_num, equip_issues, required_services, status)
-					VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
-				$stmt->execute([$fullname, $req_dept, $dept_acc_id, $contact, $dept_head_fullname, $euser_fullname, $position, $equip_type, $equip_num, $equip_issues, $required_services, $status]);
-				if($stmt == TRUE){
+				$stmt = $conn->prepare("INSERT INTO formdata(req_name, req_dept, dept_acc_id, contact,  dept_head_fullname, euser_fullname, position, equip_type, equip_num, equip_issues, required_services)
+					VALUES(?,?,?,?,?,?,?,?,?,?,?)");
+				$stmt->execute([$fullname, $req_dept, $dept_acc_id, $contact, $dept_head_fullname, $euser_fullname, $position, $equip_type, $equip_num, $equip_issues, $required_services]);
+				$count = $stmt->rowCount();
+				if($count > 0){
 				echo "added";
-				}else{
-				echo "something is wrong";
+				}
 			}
-		}	
-	}
-	
-		public function getUser(){
-			if(isset($_GET['submit'])){
-			$fname = $_GET['fname'];
-			$midname = $_GET['midname'];
-			$lname = $_GET['lname'];
-			$suffix = $_GET['suffix'];
-			$fullname = $fname. " ". $midname. " ". $lname. " ". $suffix;
-			$conn = $this->openConnection();
-			$stmt = $conn->prepare("SELECT * FROM users WHERE user_name = :user_name");
-	//named parameters	--col-name		--variable
-			$stmt->execute(['user_name' => $fullname]);
-				//sessioned colname = variable name
-				$_SESSION['user_name'] = $fullname;
-				if(isset($_SESSION['user_name'])){
-				header("Location: reqform.php");
-
-			}else{
-			echo "failed";
-			}	
-		}
-	}
-	//Admin functions start//
-// 		public function set_admindata(){
-// 		if(!isset($_SESSION)){
-// 			session_start();
-// 		}
-// 		$_SESSION['admindata'] = $_POST['adminname'];
-// 		return $_SESSION['admindata'];
-// 	}
-
-// 		public function get_admindata(){
-// 		if(!isset($_SESSION)){
-// 			session_start();
-
-// 		}
-// 		if(isset($_SESSION['userdata'])){
-// 			return $_SESSION['admindata'];
-// 		}else{
-		
-// 		return null;
-// 	}
-// }
-// 	public function get_adminKey(){
-		// if(isset($_SESSION)){
-		// $conn = $this->openConnection();
-		// $stmt = $conn->prepare("SELECT * FROM admin");
-		// $stmt->execute();
-		// $adminid = $stmt->fetch();
-		// $adminkey = $adminid['adminname']. $adminid['id'];
-		// return $adminkey;
-		
-	// 	}
-	// }
-
-	// 	public function getAdmin(){
-	// 		if(isset($_POST['submit'])){
-	// 		$adminname = $_POST['adminname'];
-	// 		$password = $_POST['password'];
-	// 		$conn = $this->openConnection();
-	// 		$stmt = $conn->prepare("SELECT * FROM admin WHERE adminname = ? AND password = ?");
-	// 		$stmt->execute([$adminname, $password]);
-	// 		$admin = $stmt->fetch();
-	// 		$count = $stmt->rowCount();
-	// 		if($count > 0){
-	// 			echo "welcome". $admin['adminname'];
-	// 			$_SESSION['adminname'] = $adminname;
-	// 			// $this->set_admindata($admin); 
-
-	// 		}else{
-	// 			return 0;
-	// 		}
-	// 	}
-	// }
-
-		public function adminLogin(){
-
-			if (isset($_POST['submit'])) {
-			$adminname = $_POST['adminname'];
-			$password = $_POST['password'];
-
-			$conn = $this->openConnection();
-			$stmt = $conn->prepare("SELECT * FROM admin WHERE adminname = ? AND password = ?");
-			$stmt->execute([$adminname,$password]);
-			$admin = $stmt->fetch();
-			$count = $stmt->rowCount();
-			if($count > 0 ){
-				$_SESSION['adminname'] = $adminname;
-				header("Location: adminpanel.php");
-					
-
-
-			}else{
-				echo "<center><h2>Incorrect account_id nor password</h2</center>";
-		}
+		}else{	
+				echo "something is wrong";	
 	}
 }
 
-		
+	public function register(){
+		if(isset($_POST['register'])){
+			$firstname = $_POST['firstname'];
+			$lastname = $_POST['lastname'];
+			$account_id = $_POST['account_id'];
+			$contact = $_POST['contact'];
+			$department = $_POST['department'];
+			$dept_head_firstname = $_POST['dept_head_firstname'];
+			$dept_head_lastname = $_POST['dept_head_lastname'];
+			$dept_head_fullname = $dept_head_firstname. " ". $dept_head_lastname;
+			$position = $_POST['position'];
+			$password = $_POST['password'];
+
+			$conn = $this->openConnection();
+			$stmt = $conn->prepare("INSERT INTO `members`(`firstname`, `lastname`, `account_id`, `contact`, `department`, `dept_head_fullname`, `position`, `password`) 
+				VALUES (?,?,?,?,?,?,?,?)");
+			$stmt->execute([$firstname, $lastname, $account_id, $contact, $department, $dept_head_fullname, $position, $password]);
+			$count = $stmt->rowCount();
+			if($count > 0){
+				echo "Added";
+				header("Location: login.php");
+			}else{
+				FALSE;
+			}
+		}
+	}
+	public function myAdmin(){
+		$admin = $this->get_userdata();
+		if(isset($admin)){
+			if($admin['access'] != 'administrator'){
+				header("Location: login.php");
 			
+			}
+		}else{
+			
+			header("Location: login.php");
+
+			}
+}
+		
+
+	
 	public function addAdmin(){
 		if(isset($_POST['add'])){
 			$adminname = $_POST['adminname'];
@@ -194,8 +177,8 @@ class RequestForm {
 		if(!isset($_SESSION)){
 		session_start();
 		}
-		$_SESSION['admindata'] = null;
-		unset($_SESSION['admindata']);
+		$_SESSION['userdata'] = null;
+		unset($_SESSION['userdata']);
 	}
 
 
@@ -253,10 +236,25 @@ class RequestForm {
 
 		}
 	}
+	public function redirect(){
+		if(isset($_POST['submit'])){
+			$account_id = $_POST['account_id'];
+			$password = $_POST['password'];
+			$conn = $this->openConnection();
+			$stmt = $conn->prepare("SELECT * FROM members WHERE account_id = ? AND password = ?");
+			$stmt->execute([$account_id, $password]);
+			$user = $stmt->fetch();
+			$count = $stmt->rowCount();
+			if($user['access'] != 'administrator'){
+				header("Location: reqform.php");
+			}else{
+				header("Location: adminpanel.php");
+			}
+	}
 
 
+	}
 }
-
 
 
 

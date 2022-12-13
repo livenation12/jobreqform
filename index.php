@@ -9,7 +9,7 @@
 	<div class="container">
 		<div style="text-align: center; padding-top: 15rem;">
 	<a href="adminlogin.php"><button style="width: 20rem; height: 20rem;"> Go to Admin</button></a>
-	<a href="usercred.php"><button style="width: 20rem;height: 20rem;"> Send request form</button></a>
+	<a href="reqform.php"><button style="width: 20rem;height: 20rem;"> Send request form</button></a>
 		</div>
 	</div>
 

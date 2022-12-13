@@ -3,10 +3,6 @@ session_start();
 require_once('formclass.php');
 $denied = $class->getDenied();
 
-if(!isset($_SESSION)){
-  header("Location: adminlogin.php");
-  }
-  echo "welcome". $_SESSION['adminname'];
 
 ?>
 

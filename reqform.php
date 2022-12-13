@@ -1,11 +1,10 @@
 <?php
-session_start();
 require_once('formclass.php');
-$class->userInsertData();
 $class->getUser();
+$class->userInsertData();
 
 
-	echo "Fill this form to proceed ". $_SESSION['user_name'];
+
 		
 	
 ?>
@@ -37,74 +36,20 @@ $class->getUser();
 		<div class="border border-5">
 		<tr>
 			<form action="" method="post">
-			<td>
-		<div class="container mt-3">
-		<div class="form-floating mb-3 mt-3">
-				<input type="text" name="deptname" class="form-control">
-				<label>Requesting Dept/Office:</label>
-			</td>
-		</div>
-	</div>
 
-			<td>
-		<div class="container mt-3">
-		<div class="form-floating mb-3 mt-3">
-				<input type="text" name="deptid" class="form-control" >
-				<label>Dept/Office Account ID:</label>
-			</div>
-		</div>
-			</td>
-
-			<td>
-				<div class="container mt-3">
-		<div class="form-floating mb-3 mt-3">
-				<input type="text" name="contact" class="form-control">
-				<label>Contact/Local #:</label>
-			</div>
-		</div>
-			</td>
-
-			<td>
-				<div class="container mt-3">
-		<div class="form-floating mb-3 mt-3">
-				<input type="date" name="date_sub" class="form-control">
-				<label>Date:</label>
-			</div>
-		</div>
-			</td>
+		
 		</tr>
 		
 		<tr>
 			<td>
-				<div class="container">
-				<table>
-					
-						<label>Name of Dept/Office Head:</label>
-						<tr><td>
-							<input type="text" name="deptheadfname" class="form-control" placeholder="Firstname" required>
-						</td>
-						<td>
-						<input type="text" name="deptheadmidname" class="form-control" placeholder="Middlename/Optional">
-						</td>
-						<td>
-						<input type="text" name="deptheadlname" class="form-control"  placeholder="Lastname" required>
-						</td>
-						<td>
-						<input type="text" name="deptheadsuffix" class="form-control m" placeholder="Suffix/Optional">
-					</div></td>
-				</tr>
-				</table>
+				
 			</td>
 					<td colspan="2">
-						<div class="container mt-5">
-				<div class="form-floating mb-3 mt-1">
-						
-						<input type="text" name="dept_head_sign" value="---" readonly class="form-control">
-						<label>Signature of Requesting Dept/Office Head:</label>
-					</div></div>
+	
 					</td>
 				</tr>
 				<tr>
+					<tr>
 					<td>
 						<div class="container">
 						<table>
@@ -121,14 +66,9 @@ $class->getUser();
 						<input type="text" name="eusersuffix" class="form-control" placeholder="Suffix/Optional">
 					</div></td>
 					</table>
-					</td>
-					<td colspan="2">
-						<div class="container mt-5">
-						<div class="form-floating mb-3 mt-3">
-						<input type="text" name="position" class="form-control" required>
-						<label>Position:</label>
+						
+				</tr>
 					
-					</td>
 				</tr>
 				<tr>	
 					<td>

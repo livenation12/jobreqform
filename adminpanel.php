@@ -1,13 +1,6 @@
 <?php
 session_start();
 require_once("formclass.php");
-$admin = $class->adminLogin();
-// $admindetails = $class->get_admindata();
-
-if(!isset($_SESSION['adminname'])){
-  header("Location: adminlogin.php");
-  }
-  echo "welcome". $_SESSION['adminname'];
 
 
 
