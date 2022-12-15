@@ -1,15 +1,11 @@
 <?php
-session_start();
 require_once('formclass.php');
 $user = $class->getUser();
-$directory = $class->redirect();
-
-
-
+$userdetails = $class->get_userdata();
+$direct = $class->redirect();
 
 
 ?>
-
 
 <!DOCTYPE html>
 <html>

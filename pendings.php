@@ -4,10 +4,6 @@ require_once('formclass.php');
 $pendings = $class->getPendings();
 $status = $class->updateStatus();
 
-if(!isset($_SESSION)){
-  header("Location: adminlogin.php");
-  }
-  echo "welcome". $_SESSION['adminname'];
 ?>
 
 

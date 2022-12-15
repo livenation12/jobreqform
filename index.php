@@ -8,11 +8,13 @@
 <body>
 	<div class="container">
 		<div style="text-align: center; padding-top: 15rem;">
-	<a href="adminlogin.php"><button style="width: 20rem; height: 20rem;"> Go to Admin</button></a>
-	<a href="reqform.php"><button style="width: 20rem;height: 20rem;"> Send request form</button></a>
+	<a href="login.php"><button style="width: 20rem; height: 20rem;">Go to Admin</button></a><br>
+	<a href="login.php"><button style="width: 20rem;height: 20rem;">Send request form</button></a><br>
+	<label>Not registered yet?!</label>
+	<br><a href="register.php"><button style="width: 5rem;height: 5rem;">Register Now</button></a>
 		</div>
 	</div>
 
 
 </body>
-</html>
+</html>	

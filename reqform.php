@@ -1,12 +1,10 @@
 <?php
 require_once('formclass.php');
-$class->getUser();
-$class->userInsertData();
+$userdetails = $class->get_userdata();
+$insert = $class->userInsertData();
+if(isset($userdetails)){
 
 
-
-		
-	
 ?>
 
 
@@ -27,6 +25,8 @@ $class->userInsertData();
 <div class="fw-semibold">
 
 
+
+
 	
 
 	<p class="fs-5">Request for <span class="fs-3">IT SERVICES</span></p>
@@ -36,8 +36,20 @@ $class->userInsertData();
 		<div class="border border-5">
 		<tr>
 			<form action="" method="post">
+				<input type="hidden" name="fullname" value="<?php echo $userdetails['fullname'];?>">
+				<input type="hidden" name="req_dept" value="<?php echo $userdetails['department'];?>">
+				<input type="hidden" name="account_id" value="<?php echo $userdetails['account_id'];?>">
+				<input type="hidden" name="contact" value="<?php echo $userdetails['contact'];?>">
+				<input type="hidden" name="dept_head_fullname" value="<?php echo $userdetails['dept_head_fullname'];?>">
+				<input type="hidden" name="position" value="<?php echo $userdetails['position'];?>">
 
-		
+			<?php
+				}else{
+					header("Location: login.php");	
+				}
+
+			?>
+
 		</tr>
 		
 		<tr>
@@ -272,6 +284,7 @@ $class->userInsertData();
 					<td> 
 						<button type="submit" name="submit" class="btn btn-success">Submit Request</button>
 						<a href="index.php"> <button class="btn btn-danger" name="backhome">Back to Home</button></a>
+						<a href="logout.php">LOGOUT</a>
 		</form>
 					</td>
 			</tr>

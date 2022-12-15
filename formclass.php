@@ -33,8 +33,9 @@ class RequestForm {
 				echo "welcome". $user['firstname']. " ". $user['lastname'];
 				$this->set_userdata($user);
 
+
 			}else{
-				"Login Failed";
+				echo "Login Failed";
 			}
 		}
 	}
@@ -62,18 +63,13 @@ class RequestForm {
 	}
 }
 		public function userInsertData(){
-			$user = $this->get_userdata();
-		if(isset($user)){
-			$fullname = $user['fullname'];	
-				$req_dept = $user['department'];
-				$dept_acc_id = $user['account_id'];
-				$contact = $user['contact'];	
-				$dept_head_fullname = $user['dept_head_fullname'];
-				$position = $user['position'];
-			
 			if (isset($_POST['submit'])) {
-				
-
+					$fullname = $_POST['fullname'];
+					$req_dept = $_POST['req_dept'];
+					$account_id = $_POST['account_id'];
+					$contact = $_POST['contact'];
+					$dept_head_fullname = $_POST['dept_head_fullname'];
+					$position = $_POST['position'];
 				$euser_fname = $_POST['euserfname'];
 				$euser_midname = $_POST['eusermidname'];
 				$euser_lname = $_POST['euserlname'];
@@ -87,14 +83,13 @@ class RequestForm {
 				$conn = $this->openConnection();
 				$stmt = $conn->prepare("INSERT INTO formdata(req_name, req_dept, dept_acc_id, contact,  dept_head_fullname, euser_fullname, position, equip_type, equip_num, equip_issues, required_services)
 					VALUES(?,?,?,?,?,?,?,?,?,?,?)");
-				$stmt->execute([$fullname, $req_dept, $dept_acc_id, $contact, $dept_head_fullname, $euser_fullname, $position, $equip_type, $equip_num, $equip_issues, $required_services]);
+				$stmt->execute([$fullname, $req_dept, $account_id, $contact, $dept_head_fullname, $euser_fullname, $position, $equip_type, $equip_num, $equip_issues, $required_services]);
 				$count = $stmt->rowCount();
 				if($count > 0){
 				echo "added";
+				}else{
+					echo "not added";
 				}
-			}
-		}else{	
-				echo "something is wrong";	
 	}
 }
 
@@ -121,36 +116,22 @@ class RequestForm {
 				header("Location: login.php");
 			}else{
 				FALSE;
-			}
+				}
+			
 		}
 	}
-	public function myAdmin(){
-		$admin = $this->get_userdata();
-		if(isset($admin)){
-			if($admin['access'] != 'administrator'){
-				header("Location: login.php");
-			
-			}
-		}else{
-			
-			header("Location: login.php");
-
-			}
-}
-		
-
 	
 	public function addAdmin(){
 		if(isset($_POST['add'])){
-			$adminname = $_POST['adminname'];
+
 			$account_id = $_POST['account_id'];
 			$password = $_POST['password'];
 
 			if($this->check_admin_exist($adminname) == 0){
 
 			$conn = $this->openConnection();
-			$stmt = $conn->prepare("INSERT INTO admin(adminname, account_id, password) VALUES(?,?,?)");
-			$stmt->execute([$adminname,$account_id,$password]);
+			$stmt = $conn->prepare("INSERT INTO members(account_id, password) VALUES(?,?)");
+			$stmt->execute([$account_id,$password]);
 
 
 			echo "added";
@@ -162,16 +143,17 @@ class RequestForm {
 		}
 	}
 	
-	public function check_admin_exist(){
-		if(isset($_POST['add'])){
-			$adminname = $_POST['adminname'];
-		$conn = $this->openConnection();
-		$stmt = $conn->prepare("SELECT * FROM admin WHERE adminname = ?");
-		$stmt->execute([$adminname]);
-		$count = $stmt->rowCount();
-		return $count;
-	}
-}
+	
+// 	public function check_admin_exist(){
+// 		if(isset($_POST['add'])){
+// 			$adminname = $_POST['adminname'];
+// 		$conn = $this->openConnection();
+// 		$stmt = $conn->prepare("SELECT * FROM admin WHERE adminname = ?");
+// 		$stmt->execute([$adminname]);
+// 		$count = $stmt->rowCount();
+// 		return $count;
+// 	}
+// }
 	
 	public function logout(){
 		if(!isset($_SESSION)){
@@ -236,23 +218,26 @@ class RequestForm {
 
 		}
 	}
-	public function redirect(){
-		if(isset($_POST['submit'])){
-			$account_id = $_POST['account_id'];
-			$password = $_POST['password'];
-			$conn = $this->openConnection();
-			$stmt = $conn->prepare("SELECT * FROM members WHERE account_id = ? AND password = ?");
-			$stmt->execute([$account_id, $password]);
-			$user = $stmt->fetch();
-			$count = $stmt->rowCount();
-			if($user['access'] != 'administrator'){
-				header("Location: reqform.php");
-			}else{
-				header("Location: adminpanel.php");
+	public function redirect(){	
+	 	$userdetails = $this->get_userdata();
+			if(isset($userdetails)){
+				if($userdetails['access'] == 'administrator'){
+					header("Location: adminpanel.php");
 			}
+			if($userdetails['access'] == 'user'){
+					header("Location: reqform.php");
+			}
+		}
 	}
-
-
+	public function sessionAdmin(){
+		$session = $this->get_userdata();
+		if(isset($session)){
+			if($session['access'] != 'administrator'){
+				header("Location: login.php");
+			}
+		}else{
+			header("Location: login.php");
+		} 
 	}
 }
 

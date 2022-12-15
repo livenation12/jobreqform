@@ -1,11 +1,11 @@
 
 <?php
-session_start();
-require_once('formclass.php');
 
-$class->addAdmin();
+require_once('formclass.php');
 $userdetails = $class->get_userdata();
-$mySession = $class->myAdmin();
+$class->addAdmin();
+$session = $class->sessionAdmin();
+
 
 
 

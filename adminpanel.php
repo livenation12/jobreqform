@@ -1,8 +1,7 @@
 <?php
-session_start();
 require_once("formclass.php");
-
-
+$userdetails = $class->get_userdata();
+$session = $class->sessionAdmin();
 
 
 
