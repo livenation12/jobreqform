@@ -167,8 +167,8 @@ class RequestForm {
 
 	public function getPendings(){
 		$conn = $this->openConnection();
-		$stmt = $conn->prepare("SELECT * FROM users WHERE status = :status");
-		$stmt->execute(['status' => 'pending']);
+		$stmt = $conn->prepare("SELECT * FROM formdata WHERE form_status = :form_status");
+		$stmt->execute(['form_status' => 'pending']);
 		$pendings = $stmt->fetchAll();
 		$count = $stmt->rowCount();
 		if($count > 0 ){
@@ -179,8 +179,8 @@ class RequestForm {
 	}
 	public function getApproved(){
 		$conn = $this->openConnection();
-		$stmt = $conn->prepare("SELECT * FROM users WHERE status = :status");
-		$stmt->execute(['status' => 'approved']);
+		$stmt = $conn->prepare("SELECT * FROM formdata WHERE form_status = :form_status");
+		$stmt->execute(['form_status' => 'approved']);
 		$approved = $stmt->fetchAll();
 		$count = $stmt->rowCount();
 		if($count > 0 ){
@@ -190,8 +190,8 @@ class RequestForm {
 	}
 	public function getDenied(){
 		$conn = $this->openConnection();
-		$stmt = $conn->prepare("SELECT * FROM users WHERE status = :status");
-		$stmt->execute(['status' => 'denied']);
+		$stmt = $conn->prepare("SELECT * FROM formdata WHERE form_status = :form_status");
+		$stmt->execute(['form_status' => 'denied']);
 		$denied = $stmt->fetchAll();
 		$count = $stmt->rowCount();
 		if($count > 0 ){
@@ -201,23 +201,28 @@ class RequestForm {
 	}
 
 	public function updateStatus(){
-		if(isset($_GET['update'])){	
-			$id =  $_GET['id'];
-			$status = $_GET['status'];
-		
+		if(isset($_POST['update'])){	
+			$id =  $_POST['id'];
+			$form_status = $_POST['form_status'];
+			$changed_status_by = $_POST['changed_status_by'];
 			$conn = $this->openConnection();
-			$stmt = $conn->prepare("UPDATE `users` SET status = :status WHERE id = :id");
-			$stmt->execute(["status" => $status, "id" => $id]);
+			$stmt = $conn->prepare("UPDATE formdata SET form_status = :form_status WHERE id = :id AND INSERT INTO formdata VALUES(:change_status_by)");
+			$stmt->execute(["form_status" => $form_status, "id" => $id], ["changed_status_by" => $changed_status_by]);
 			$count = $stmt->rowCount();
 			if($count > 0){
-				"successfully updated";
+			echo "updated";
+			}
+
+
+// UPDATE formdata SET form_status = ? AS WHERE id = ?
+
 			}else{
-				"error";
+				echo "error";
 			}
 
 
 		}
-	}
+	
 	public function redirect(){	
 	 	$userdetails = $this->get_userdata();
 			if(isset($userdetails)){

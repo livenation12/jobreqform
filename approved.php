@@ -1,13 +1,11 @@
 <?php
-session_start();
 require_once('formclass.php');
+$userdetails = $class->get_userdata();
+$session = $class->sessionAdmin();
 $approved = $class->getApproved();
 $status = $class->updateStatus();
 
-if(!isset($_SESSION)){
-  header("Location: adminlogin.php");
-  }
-  echo "welcome". $_SESSION['adminname'];
+
 ?>
 
 
@@ -59,16 +57,16 @@ foreach ($approved as $row) {
   </ul>
 </div>
 		
-<form method="get">
+<form method="post">
 
-	<input type="hidden" name="id" value="<?php echo $row['id'];?>">
-	<select name="status">
-		<option selected disabled><?php echo $row['status'];?></option>
+	<select name="form_status">
+		<option selected disabled><?php echo $row['form_status'];?></option>
 		<option value="approved">APPROVED</option>
 		<option value="denied">DENIED</option>
-	</select>
+	</select> 
+	<a href="approved.php?id=<?=$row['id']?> "></a>
 	<input type="submit" name="update" value="UPDATE">
-	 <a href="approved.php?id=<?=$row['id']?> "></a>
+	
 	</form>
 	</div>
 

@@ -1,7 +1,10 @@
 <?php
-session_start();
+
 require_once('formclass.php');
+$userdetails = $class->get_userdata();
+$session = $class->sessionAdmin();
 $denied = $class->getDenied();
+$form = $class->updateStatus();
 
 
 ?>
@@ -23,7 +26,7 @@ $denied = $class->getDenied();
 
 switch($denied){
 	case null:
-	echo "empty";
+	echo "no records yet";
 	break;
 
 	default:
@@ -51,15 +54,16 @@ foreach ($denied as $row) {
     <li class="list-group-item"><?php echo $row['date_added']; ?></li>
   </ul>
 </div>
-		<form method="get">
-	<input type="hidden" value="<?php $row['id']?>"	name="id">
-	<select name="status">
-		<option value=""><?php echo $row['status'];?></option>
+		<form method="post">
+
+	<select name="form_status">
+		<option value=""><?php echo $row['form_status'];?></option>
 		<option value="denied">DENIED</option>
 		<option value="approved">APPROVED</option>
-	</select>
-	<input name="update" type="submit" value="UPDATE">
+	</select>	
 	<a href="denied.php?id=<?=$row['id']?> "></a>
+	<input name="update" type="submit" value="UPDATE">
+
 	</form>
 	</div>
 

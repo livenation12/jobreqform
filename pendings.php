@@ -1,11 +1,12 @@
 <?php
-session_start();
+
 require_once('formclass.php');
+$userdetails = $class->get_userdata();
+$session = $class->sessionAdmin();
 $pendings = $class->getPendings();
 $status = $class->updateStatus();
-
+if(isset($userdetails)){
 ?>
-
 
 <!DOCTYPE html>
 <html>
@@ -36,8 +37,8 @@ foreach ($pendings as $pending) {
 <div class="container">
 <div class="card" style="width: 20rem; padding: 10px; background-color: gray;">
   <div class="card-header">
-  	<?php echo $pending['user_name']; ?>
-	<h1><?php echo $pending['id']; ?></h1>
+
+  	<?php echo $pending['req_name']; ?>
     
   </div>
   <ul class="list-group list-group-flush">
@@ -55,27 +56,38 @@ foreach ($pendings as $pending) {
   </ul>
 </div>
 		
-<form method="get">
 
-	<input type="hidden" name="id" value="<?php echo $pending['id'];?>">
-	<select name="status">
+
+
+																			
+	
+	<form method="post">
+
+		<input type="hidden" name="id" value="<?php echo $pending['id']?>">
+
+
+
+	<input type="hidden" name="changed_status_by" value="<?php echo $userdetails['fullname'];?>">
+	<select name="form_status">
 		<option selected disabled>---</option>
 		<option value="approved">APPROVED</option>
 		<option value="denied">DENIED</option>
 	</select>
 	<input type="submit" name="update" value="UPDATE">
-	 <a href="adminmain.php?id=<?=$pending['id']?> "></a>
+	
 	</form>
 	</div>
 
 
-
-
-  <?php
+			<?php
 }
 break;
+} 
 
-   } ?>
+ }else{
+ 	echo "You do not belong here!";
+
+ }?>
 
 </body>
 </html>
