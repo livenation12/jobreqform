@@ -83,7 +83,11 @@ foreach ($pendings as $pending) {
 }
 break;
 } 
+	?>	
 
+
+
+<?php
  }else{
  	echo "You do not belong here!";
 

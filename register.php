@@ -18,17 +18,18 @@ $register = $class->register();
 		<h1>Register</h1>
 	<form method="post">
 
-		<input type="text" name="firstname" placeholder="firstname"><br>
-		<input type="text" name="lastname" placeholder="lastname"><br>
-		<input type="text" name="account_id" placeholder="Account ID"><br>
-		<input type="text" name="contact" placeholder="contact"><br>
-		<input type="text" name="department" placeholder="department"><br>
-		<input type="text" name="dept_head_firstname" placeholder="Department/Office Head Firstname">
+		<input required type="text" name="firstname" placeholder="firstname"><br>
+		<input required type="text" name="lastname" placeholder="lastname"><br>
+		<input required type="text" name="account_id" placeholder="Account ID"><br>
+		<input required type="text" name="contact" placeholder="contact"><br>
+		<input required type="text" name="department" placeholder="department"><br>
+		<input required type="text" name="dept_head_firstname" placeholder="Department/Office Head Firstname">
 			<br>
-		<input type="text" name="dept_head_lastname" placeholder="Department/Office Head Lastname"><br>
-		<input type="text" name="position" placeholder="Your Position"><br>
-		<input type="password" name="password" placeholder="Set Your Password"><br>
-		<input type="submit" name="register" value="REGISTER">
+		<input required type="text" name="dept_head_lastname" placeholder="Department/Office Head Lastname"><br>
+		<input required type="text" name="position" placeholder="Your Position"><br>
+		<input required type="password" name="password" placeholder="Set Your Password"><br>
+		<input required type="password" name="cpassword" placeholder="Confirm Your Password"><br>
+		<input required type="submit" name="register" value="REGISTER">
 	</form>
 </div>
 

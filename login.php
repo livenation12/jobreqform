@@ -3,10 +3,9 @@ require_once('formclass.php');
 $user = $class->getUser();
 $userdetails = $class->get_userdata();
 $direct = $class->redirect();
-
-
 ?>
-
+<!-- 5555 = great = $2y$10$.IYa4sl3bRWCXILUGWGz0uSqa2ZmPqoQRwNK5UMjZBzr8VxI50HwG -->
+<!--  1234 = pass= $2y$10$.IYa4sl3bRWCXILUGWGz0uSqa2ZmPqoQRwNK5UMjZBzr8VxI50HwG -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,6 +17,7 @@ $direct = $class->redirect();
 <body>
 
 	<div class="card-header m-5 p-5" style="text-align:center" >
+		<a href="register.php">Not yet Registered? Click this</a>
 		<h1>-LOGIN-</h1>
 	<form action="" method="post">
 	<label>AccountID:</label>

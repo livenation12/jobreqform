@@ -30,15 +30,27 @@ class RequestForm {
 			$user = $stmt->fetch();
 			$count = $stmt->rowCount();
 			if($count > 0){
-				echo "welcome". $user['firstname']. " ". $user['lastname'];
+				echo "welcome";
 				$this->set_userdata($user);
+			}
+			// if($stmt->rowCount() > 0){
+			// 	$user = $stmt->fetch();
+			// 	if (password_verify($password, $user['password'])) {
+			// 		echo "logged in successfully";
 
+			// 		header("Location: reqform.php");
+			// 	}else{
+			// 		echo "not correct";
+			// 	}
+			// }else{
+			// 	echo "Youre password or account_id do not match";
+			// }
 
 			}else{
-				echo "Login Failed";
+				echo "Login Failed login again";
 			}
 		}
-	}
+	
 	public function set_userdata($array){
 		if(!isset($_SESSION)){
 			session_start();
@@ -75,6 +87,7 @@ class RequestForm {
 				$euser_lname = $_POST['euserlname'];
 				$euser_suffix = $_POST['eusersuffix'];
 				$euser_fullname = $euser_fname. " ". $euser_midname. " ". $euser_lname. " ". $euser_suffix;
+				$form_date = $_POST['form_date'];
 
 				$equip_type = $_POST['equip_type'];
 				$equip_num = $_POST['equip_number'];
@@ -105,21 +118,28 @@ class RequestForm {
 			$dept_head_fullname = $dept_head_firstname. " ". $dept_head_lastname;
 			$position = $_POST['position'];
 			$password = $_POST['password'];
+			$cpassword = $_POST['cpassword'];
+			if($password != $cpassword){
+				echo "Passwords do not match";
+			}else{
+			$hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
 			$conn = $this->openConnection();
 			$stmt = $conn->prepare("INSERT INTO `members`(`firstname`, `lastname`, `account_id`, `contact`, `department`, `dept_head_fullname`, `position`, `password`) 
 				VALUES (?,?,?,?,?,?,?,?)");
-			$stmt->execute([$firstname, $lastname, $account_id, $contact, $department, $dept_head_fullname, $position, $password]);
+			$stmt->execute([$firstname, $lastname, $account_id, $contact, $department, $dept_head_fullname, $position, $hashed_password]);
 			$count = $stmt->rowCount();
 			if($count > 0){
 				echo "Added";
 				header("Location: login.php");
 			}else{
-				FALSE;
+				echo "something is wrong";
 				}
 			
 		}
 	}
+
+}
 	
 	public function addAdmin(){
 		if(isset($_POST['add'])){
@@ -206,23 +226,18 @@ class RequestForm {
 			$form_status = $_POST['form_status'];
 			$changed_status_by = $_POST['changed_status_by'];
 			$conn = $this->openConnection();
-			$stmt = $conn->prepare("UPDATE formdata SET form_status = :form_status WHERE id = :id AND INSERT INTO formdata VALUES(:change_status_by)");
-			$stmt->execute(["form_status" => $form_status, "id" => $id], ["changed_status_by" => $changed_status_by]);
+			$stmt = $conn->prepare("INSERT INTO formdata(changed_status_by) VALUES(:changed_status_by) WHERE id = :id); UPDATE formdata SET form_status = :form_status WHERE id = :id");
+			$stmt->execute(["changed_status_by" => $changed_status_by, "form_status" => $form_status, "id" => $id]);
 			$count = $stmt->rowCount();
 			if($count > 0){
-			echo "updated";
-			}
-
-
-// UPDATE formdata SET form_status = ? AS WHERE id = ?
-
+				"successfully updated";
 			}else{
-				echo "error";
+				"error";
 			}
 
 
 		}
-	
+	}
 	public function redirect(){	
 	 	$userdetails = $this->get_userdata();
 			if(isset($userdetails)){
