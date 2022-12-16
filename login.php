@@ -1,5 +1,5 @@
 <?php
-require_once('formclass.php');
+include('formclass.php');
 $user = $class->getUser();
 $userdetails = $class->get_userdata();
 $direct = $class->redirect();

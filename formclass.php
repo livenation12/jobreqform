@@ -21,30 +21,64 @@ class RequestForm {
 			$this->con = null;
 		}
 		public function getUser(){
-			if(isset($_POST['submit'])){
+			if(isset($_POST['account_id'])){
 				$account_id = $_POST['account_id'];
 			$conn = $this->openConnection();
-			$stmt = $conn->prepare("SELECT account_id,password FROM `members` 
-				WHERE account_id = ?");
-			$stmt->execute([$account_id]);
-			$count = $stmt->rowCount();	
+			$stmt = $conn->prepare("SELECT password FROM members WHERE account_id = ?");
+			$stmt->bindParam(1, $account_id);
+			$stmt->execute();
 			$user = $stmt->fetch();
-			if($count > 0){
-				echo "theres one existed";
-				if(password_verify($_POST['password'], $user['password'])) {
+			if(password_verify($_POST['password'], $user['password'])){
+				// echo "theres one existed";
+				// if(password_verify($_POST['password'], $user['password'])) {
 					header("Location: reqform.php");
 				
 				}else{
 					echo "not correct";
 				}
 			}
-			// }else{
-			// 	echo "No account_id matched";
-			// }
+		}
 
 		
+				public function register(){
+		if(isset($_POST['register'])){
+			$firstname = $_POST['firstname'];
+			$lastname = $_POST['lastname'];
+			$account_id = $_POST['account_id'];
+			$contact = $_POST['contact'];
+			$department = $_POST['department'];
+			$dept_head_firstname = $_POST['dept_head_firstname'];
+			$dept_head_lastname = $_POST['dept_head_lastname'];
+			$dept_head_fullname = $dept_head_firstname. " ". $dept_head_lastname;
+			$position = $_POST['position'];
+			$password = $_POST['password'];
+			$cpassword = $_POST['cpassword'];
+			if($this->check_user_exist($account_id) == 0){
+			if($password != $cpassword){
+				echo "Passwords do not match";
+			}else{
+			$hashed_password = password_hash($password, PASSWORD_DEFAULT);
+			$conn = $this->openConnection();
+			$stmt = $conn->prepare("INSERT INTO `members`(`firstname`, `lastname`, `account_id`, `contact`, `department`, `dept_head_fullname`, `position`, `password`) 
+				VALUES (?,?,?,?,?,?,?,?)");
+			$stmt->execute([$firstname, $lastname, $account_id, $contact, $department, $dept_head_fullname, $position, $hashed_password]);
+			$count = $stmt->rowCount();
+			if($count > 0){
+				echo "Added";
+				header("Location: login.php");
+			}else{
+				echo "something is wrong";
+				}
 			}
+			
+		}else{
+			echo "this account_id is already registered";
 		}
+	}
+
+}	
+
+		
 	
 	public function set_userdata($array){
 		if(!isset($_SESSION)){
@@ -101,52 +135,6 @@ class RequestForm {
 	}
 }
 
-	public function register(){
-		if(isset($_POST['register'])){
-			$firstname = $_POST['firstname'];
-			$lastname = $_POST['lastname'];
-			$account_id = $_POST['account_id'];
-			$contact = $_POST['contact'];
-			$department = $_POST['department'];
-			$dept_head_firstname = $_POST['dept_head_firstname'];
-			$dept_head_lastname = $_POST['dept_head_lastname'];
-			$dept_head_fullname = $dept_head_firstname. " ". $dept_head_lastname;
-			$position = $_POST['position'];
-			$password = $_POST['password'];
-			$cpassword = $_POST['cpassword'];
-			if($this->check_user_exist($account_id) == 0){
-			if($password != $cpassword){
-				echo "Passwords do not match";
-			}else{
-			$hashed_password = password_hash($password, PASSWORD_DEFAULT);
-			$conn = $this->openConnection();
-			$stmt = $conn->prepare("INSERT INTO `members`(`firstname`, `lastname`, `account_id`, `contact`, `department`, `dept_head_fullname`, `position`, `password`) 
-				VALUES (?,?,?,?,?,?,?,?)");
-			$stmt->execute([$firstname, $lastname, $account_id, $contact, $department, $dept_head_fullname, $position, $hashed_password]);
-			$count = $stmt->rowCount();
-			if($count > 0){
-				echo "Added";
-				header("Location: login.php");
-				$user = $stmt->fetch();
-				return $user;
-			}else{
-				echo "something is wrong";
-				}
-			}
-			
-		}else{
-			echo "this account_id is already registered";
-		}
-	}
-
-}	
-	public function getpassword(){
-		$user = $this->register();
-		if(isset($user)){
-			return $user['password'];
-
-		}
-	}
 	
 	public function addAdmin(){
 		if(isset($_POST['add'])){
@@ -244,8 +232,8 @@ class RequestForm {
 			$form_status = $_POST['form_status'];
 			$changed_status_by = $_POST['changed_status_by'];
 			$conn = $this->openConnection();
-			$stmt = $conn->prepare("INSERT INTO formdata(changed_status_by) VALUES(:changed_status_by) WHERE id = :id); UPDATE formdata SET form_status = :form_status WHERE id = :id");
-			$stmt->execute(["changed_status_by" => $changed_status_by, "form_status" => $form_status, "id" => $id]);
+			$stmt = $conn->prepare("UPDATE formdata SET changed_status_by = :changed_status_by, form_status = :form_status WHERE id = :id");
+ 			$stmt->execute(["changed_status_by" => $changed_status_by, "form_status" => $form_status, "id" => $id]);
 			$count = $stmt->rowCount();
 			if($count > 0){
 				"successfully updated";
