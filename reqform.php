@@ -246,8 +246,9 @@ if(isset($userdetails)){
 			</tr>
 			<tr>
 			<td>
-					<label>Data recovery</label>
+					
 					<input type="checkbox" name="services[]" value="Data recovery">
+					<label>Data recovery</label>
 				</td>
 				<td>
 					<input type="checkbox" name="services[]" value="Computer upgrade">
@@ -282,8 +283,7 @@ if(isset($userdetails)){
 			<tr>
 
 					<td> 
-						<button type="submit" name="submit" class="btn btn-success">Submit Request</button>
-						<a href="index.php"> <button class="btn btn-danger" name="backhome">Back to Home</button></a>
+						<button type="submit" name="submit" class="btn btn-success">Submit Request   </button>
 						<a href="logout.php">LOGOUT</a>
 		</form>
 					</td>

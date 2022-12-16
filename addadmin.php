@@ -32,7 +32,7 @@ $session = $class->sessionAdmin();
 	<label>Password:</label>
 	<input type="password" name="password">
 	<p></p>	
-	<input type="submit" name="add" value="Add">
+	<input type="submit" name="submit" value="Add">
 	</form>
 	
 </body>

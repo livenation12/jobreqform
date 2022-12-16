@@ -22,32 +22,27 @@ class RequestForm {
 		}
 		public function getUser(){
 			if(isset($_POST['submit'])){
-			$account_id = $_POST['account_id'];
-			$password = $_POST['password'];
+				$account_id = $_POST['account_id'];
 			$conn = $this->openConnection();
-			$stmt = $conn->prepare("SELECT * FROM `members` WHERE account_id = ? AND password = ?");
-			$stmt->execute([$account_id, $password]);
+			$stmt = $conn->prepare("SELECT account_id,password FROM `members` 
+				WHERE account_id = ?");
+			$stmt->execute([$account_id]);
+			$count = $stmt->rowCount();	
 			$user = $stmt->fetch();
-			$count = $stmt->rowCount();
 			if($count > 0){
-				echo "welcome";
-				$this->set_userdata($user);
+				echo "theres one existed";
+				if(password_verify($_POST['password'], $user['password'])) {
+					header("Location: reqform.php");
+				
+				}else{
+					echo "not correct";
+				}
 			}
-			// if($stmt->rowCount() > 0){
-			// 	$user = $stmt->fetch();
-			// 	if (password_verify($password, $user['password'])) {
-			// 		echo "logged in successfully";
-
-			// 		header("Location: reqform.php");
-			// 	}else{
-			// 		echo "not correct";
-			// 	}
 			// }else{
-			// 	echo "Youre password or account_id do not match";
+			// 	echo "No account_id matched";
 			// }
 
-			}else{
-				echo "Login Failed login again";
+		
 			}
 		}
 	
@@ -94,9 +89,9 @@ class RequestForm {
 				$equip_issues= implode(',', $_POST['issues']);
 				$required_services = implode(',', $_POST['services']);
 				$conn = $this->openConnection();
-				$stmt = $conn->prepare("INSERT INTO formdata(req_name, req_dept, dept_acc_id, contact,  dept_head_fullname, euser_fullname, position, equip_type, equip_num, equip_issues, required_services)
-					VALUES(?,?,?,?,?,?,?,?,?,?,?)");
-				$stmt->execute([$fullname, $req_dept, $account_id, $contact, $dept_head_fullname, $euser_fullname, $position, $equip_type, $equip_num, $equip_issues, $required_services]);
+				$stmt = $conn->prepare("INSERT INTO formdata(req_name, req_dept, dept_acc_id, contact, form_date, dept_head_fullname, euser_fullname, position, equip_type, equip_num, equip_issues, required_services)
+					VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
+				$stmt->execute([$fullname, $req_dept, $account_id, $contact, $form_date, $dept_head_fullname, $euser_fullname, $position, $equip_type, $equip_num, $equip_issues, $required_services]);
 				$count = $stmt->rowCount();
 				if($count > 0){
 				echo "added";
@@ -119,11 +114,11 @@ class RequestForm {
 			$position = $_POST['position'];
 			$password = $_POST['password'];
 			$cpassword = $_POST['cpassword'];
+			if($this->check_user_exist($account_id) == 0){
 			if($password != $cpassword){
 				echo "Passwords do not match";
 			}else{
 			$hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
 			$conn = $this->openConnection();
 			$stmt = $conn->prepare("INSERT INTO `members`(`firstname`, `lastname`, `account_id`, `contact`, `department`, `dept_head_fullname`, `position`, `password`) 
 				VALUES (?,?,?,?,?,?,?,?)");
@@ -132,14 +127,26 @@ class RequestForm {
 			if($count > 0){
 				echo "Added";
 				header("Location: login.php");
+				$user = $stmt->fetch();
+				return $user;
 			}else{
 				echo "something is wrong";
 				}
+			}
 			
+		}else{
+			echo "this account_id is already registered";
 		}
 	}
 
-}
+}	
+	public function getpassword(){
+		$user = $this->register();
+		if(isset($user)){
+			return $user['password'];
+
+		}
+	}
 	
 	public function addAdmin(){
 		if(isset($_POST['add'])){
@@ -147,7 +154,7 @@ class RequestForm {
 			$account_id = $_POST['account_id'];
 			$password = $_POST['password'];
 
-			if($this->check_admin_exist($adminname) == 0){
+			if($this->check_admin_exist($account_id) == 0){
 
 			$conn = $this->openConnection();
 			$stmt = $conn->prepare("INSERT INTO members(account_id, password) VALUES(?,?)");
@@ -164,16 +171,27 @@ class RequestForm {
 	}
 	
 	
-// 	public function check_admin_exist(){
-// 		if(isset($_POST['add'])){
-// 			$adminname = $_POST['adminname'];
-// 		$conn = $this->openConnection();
-// 		$stmt = $conn->prepare("SELECT * FROM admin WHERE adminname = ?");
-// 		$stmt->execute([$adminname]);
-// 		$count = $stmt->rowCount();
-// 		return $count;
-// 	}
-// }
+	public function check_admin_exist(){
+		if(isset($_POST['add'])){
+			$account_id = $_POST['account_id'];
+		$conn = $this->openConnection();
+		$stmt = $conn->prepare("SELECT * FROM members WHERE account_id = ?");
+		$stmt->execute([$account_id]);
+		$count = $stmt->rowCount();
+		return $count;
+	}
+}
+	public function check_user_exist(){
+		if(isset($_POST['register'])){
+			$account_id = $_POST['account_id'];
+		$conn = $this->openConnection();
+		$stmt = $conn->prepare("SELECT * FROM members WHERE account_id = ?");
+		$stmt->execute([$account_id]);
+		$count = $stmt->rowCount();
+		return $count;
+	}
+}
+
 	
 	public function logout(){
 		if(!isset($_SESSION)){
