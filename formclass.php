@@ -23,12 +23,14 @@ class RequestForm {
 		public function getUser(){
 			if(isset($_POST['account_id'])){
 				$account_id = $_POST['account_id'];
+				$password = $_POST['password'];
 			$conn = $this->openConnection();
-			$stmt = $conn->prepare("SELECT password FROM members WHERE account_id = ?");
-			$stmt->bindParam(1, $account_id);
-			$stmt->execute();
+			$stmt = $conn->prepare("SELECT * FROM members WHERE account_id = ? AND password = ?");
+			$stmt->execute([$account_id, $password]);
 			$user = $stmt->fetch();
-			if(password_verify($_POST['password'], $user['password'])){
+			if($stmt->rowCount() > 0){
+				$this->set_userdata($user);
+			// if(password_verify($_POST['password'], $user['password'])){
 				// echo "theres one existed";
 				// if(password_verify($_POST['password'], $user['password'])) {
 					header("Location: reqform.php");
@@ -116,24 +118,28 @@ class RequestForm {
 				$euser_lname = $_POST['euserlname'];
 				$euser_suffix = $_POST['eusersuffix'];
 				$euser_fullname = $euser_fname. " ". $euser_midname. " ". $euser_lname. " ". $euser_suffix;
-				$form_date = $_POST['form_date'];
+				// $form_date = $_POST['form_date'];
 
 				$equip_type = $_POST['equip_type'];
 				$equip_num = $_POST['equip_number'];
 				$equip_issues= implode(',', $_POST['issues']);
 				$required_services = implode(',', $_POST['services']);
 				$conn = $this->openConnection();
-				$stmt = $conn->prepare("INSERT INTO formdata(req_name, req_dept, dept_acc_id, contact, form_date, dept_head_fullname, euser_fullname, position, equip_type, equip_num, equip_issues, required_services)
-					VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
-				$stmt->execute([$fullname, $req_dept, $account_id, $contact, $form_date, $dept_head_fullname, $euser_fullname, $position, $equip_type, $equip_num, $equip_issues, $required_services]);
+				$stmt = $conn->prepare("INSERT INTO formdata(req_name, req_dept, dept_acc_id, contact, dept_head_fullname, euser_fullname, position, equip_type, equip_num, equip_issues, required_services)
+					VALUES(?,?,?,?,?,?,?,?,?,?,?)");
+				$stmt->execute([$fullname, $req_dept, $account_id, $contact, $dept_head_fullname, $euser_fullname, $position, $equip_type, $equip_num, $equip_issues, $required_services]);
 				$count = $stmt->rowCount();
 				if($count > 0){
 				echo "added";
+				$rowId = $stmt->fetch();
+				
+
 				}else{
 					echo "not added";
 				}
 	}
 }
+
 
 	
 	public function addAdmin(){
@@ -265,6 +271,16 @@ class RequestForm {
 			header("Location: login.php");
 		} 
 	}
+
+
+
+
+
+
+
+
+
+
 }
 
 

@@ -283,7 +283,9 @@ if(isset($userdetails)){
 			<tr>
 
 					<td> 
-						<button type="submit" name="submit" class="btn btn-success">Submit Request   </button>
+						<button type="submit" name="submit" class="btn btn-success">Submit Request/Print PDF   </button>
+						<!-- <input type="hidden" name="inputid" value="<?php echo $insert['id'];?>"> -->
+
 						<a href="logout.php">LOGOUT</a>
 		</form>
 					</td>

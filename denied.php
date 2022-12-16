@@ -4,13 +4,9 @@ require_once('formclass.php');
 $userdetails = $class->get_userdata();
 $session = $class->sessionAdmin();
 $denied = $class->getDenied();
-$form = $class->updateStatus();
-
-
+$status = $class->updateStatus();
+if(isset($userdetails)){
 ?>
-
-
-
 
 <!DOCTYPE html>
 <html>
@@ -21,24 +17,29 @@ $form = $class->updateStatus();
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
 <body>
-	<h1>DENIED REQUESTS</h1>
-<?php 
+	<h1>row REQUESTS</h1>
 
+<?php 
 switch($denied){
 	case null:
-	echo "no records yet";
+	echo "no denied records yet";
 	break;
-
 	default:
+
+
+
+
 foreach ($denied as $row) {
-	
+
 
 ?>
+
 <div class="container">
 <div class="card" style="width: 20rem; padding: 10px; background-color: gray;">
   <div class="card-header">
-  
-    <?php echo $row['user_name']; ?>
+
+  	<?php echo $row['req_name']; ?>
+    
   </div>
   <ul class="list-group list-group-flush">
   	
@@ -54,31 +55,44 @@ foreach ($denied as $row) {
     <li class="list-group-item"><?php echo $row['date_added']; ?></li>
   </ul>
 </div>
-		<form method="post">
+		
 
+
+
+																			
+	
+	<form method="post">
+
+		<input type="hidden" name="id" value="<?php echo $row['id']?>">
+
+
+
+	<input type="hidden" name="changed_status_by" value="<?php echo $userdetails['fullname'];?>">
 	<select name="form_status">
-		<option value=""><?php echo $row['form_status'];?></option>
-		<option value="denied">DENIED</option>
+		<option selected disabled>---</option>
 		<option value="approved">APPROVED</option>
-	</select>	
-	<a href="denied.php?id=<?=$row['id']?> "></a>
-	<input name="update" type="submit" value="UPDATE">
-
+		<option value="denied">DENIED</option>
+	</select>
+	<input type="submit" name="update" value="UPDATE">
+	
 	</form>
 	</div>
 
 
-
-
-  <?php
-
-
-   }
-   break;
-
-
+			<?php
 }
-   ?>
+break;
+} 
+	?>	
+
+
+
+<?php
+ }else{
+ 	echo "You do not belong here!";
+
+ }
+ ?>
 
 </body>
 </html>
