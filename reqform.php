@@ -49,7 +49,6 @@ if(isset($userdetails)){
 				 }
 
 			?>
-			<input type="date" name="form_date">
 		</tr>
 		
 		<tr>
@@ -146,7 +145,7 @@ if(isset($userdetails)){
 					<label>Printer bunking</label>
 				</td>
 				<td>
-					<input type="checkbox" name="issues[]" value="Damaged memory">
+							<input type="checkbox" name="issues[]" value="Damaged memory">
 					<label>Damaged memory</label>
 				</td>
 			</tr>

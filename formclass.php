@@ -25,25 +25,28 @@ class RequestForm {
 				$account_id = $_POST['account_id'];
 				$password = $_POST['password'];
 			$conn = $this->openConnection();
-			$stmt = $conn->prepare("SELECT * FROM members WHERE account_id = ? AND password = ?");
-			$stmt->execute([$account_id, $password]);
+			$stmt = $conn->prepare("SELECT * FROM members WHERE account_id = ?");
+			$stmt->execute([$account_id]);
 			$user = $stmt->fetch();
 			if($stmt->rowCount() > 0){
 				$this->set_userdata($user);
-			// if(password_verify($_POST['password'], $user['password'])){
+			if(password_verify($password, $user['password'])){
 				// echo "theres one existed";
 				// if(password_verify($_POST['password'], $user['password'])) {
 					header("Location: reqform.php");
+					$this->set_userdata($user);
 				
 				}else{
 					echo "not correct";
 				}
 			}
 		}
+	}
 
 		
 				public function register(){
 		if(isset($_POST['register'])){
+
 			$firstname = $_POST['firstname'];
 			$lastname = $_POST['lastname'];
 			$account_id = $_POST['account_id'];
@@ -107,10 +110,13 @@ class RequestForm {
 }
 		public function userInsertData(){
 			if (isset($_POST['submit'])) {
+					date_default_timezone_set('Asia/Manila');
 					$fullname = $_POST['fullname'];
 					$req_dept = $_POST['req_dept'];
 					$account_id = $_POST['account_id'];
 					$contact = $_POST['contact'];
+					$date_sub = date('Y-m-d H:i:s');
+
 					$dept_head_fullname = $_POST['dept_head_fullname'];
 					$position = $_POST['position'];
 				$euser_fname = $_POST['euserfname'];
@@ -125,9 +131,9 @@ class RequestForm {
 				$equip_issues= implode(',', $_POST['issues']);
 				$required_services = implode(',', $_POST['services']);
 				$conn = $this->openConnection();
-				$stmt = $conn->prepare("INSERT INTO formdata(req_name, req_dept, dept_acc_id, contact, dept_head_fullname, euser_fullname, position, equip_type, equip_num, equip_issues, required_services)
-					VALUES(?,?,?,?,?,?,?,?,?,?,?)");
-				$stmt->execute([$fullname, $req_dept, $account_id, $contact, $dept_head_fullname, $euser_fullname, $position, $equip_type, $equip_num, $equip_issues, $required_services]);
+				$stmt = $conn->prepare("INSERT INTO formdata(req_name, req_dept, dept_acc_id, contact, dept_head_fullname, euser_fullname, position, equip_type, equip_num, equip_issues, required_services,date_added)
+					VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
+				$stmt->execute([$fullname, $req_dept, $account_id, $contact, $dept_head_fullname, $euser_fullname, $position, $equip_type, $equip_num, $equip_issues, $required_services, $date_sub]);
 				$count = $stmt->rowCount();
 				if($count > 0){
 				echo "added";
@@ -229,6 +235,19 @@ class RequestForm {
 		if($count > 0 ){
 			return $denied;
 		
+		}
+	}
+	public function getnew_requests(){
+		date_default_timezone_set('Asia/Manila');
+		$now = date('Y-m-d H:i:s');
+		$lastweek = date('Y-m-d H:i:s', strtotime("-7 days"));
+		$conn = $this->openConnection();
+		$stmt = $conn->prepare("SELECT * FROM formdata WHERE date_added BETWEEN ? AND ?");
+		$stmt->execute([$lastweek,$now]);
+		$newrequests = $stmt->fetchAll();
+		$count = $stmt->rowCount();
+		if($count > 0){
+			return $newrequests;
 		}
 	}
 

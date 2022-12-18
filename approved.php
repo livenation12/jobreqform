@@ -53,41 +53,16 @@ foreach ($approved as $row) {
     <li class="list-group-item"><?php echo $row['equip_issues']; ?></li>
     <li class="list-group-item"><?php echo $row['required_services']; ?></li>
     <li class="list-group-item"><?php echo $row['date_added']; ?></li>
+     <li class="list-group-item"><textarea rows="6" cols="30"></textarea></li>
+
   </ul>
 </div>
 		
 
-
-
-																			
-	
-	<form method="post">
-
-		<input type="hidden" name="id" value="<?php echo $row['id']?>">
-
-
-
-	<input type="hidden" name="changed_status_by" value="<?php echo $userdetails['fullname'];?>">
-	<select name="form_status">
-		<option selected disabled>---</option>
-		<option value="approved">APPROVED</option>
-		<option value="denied">DENIED</option>
-	</select>
-	<input type="submit" name="update" value="UPDATE">
-	
-	</form>
-	</div>
-
-
-			<?php
+<?php
 }
 break;
 } 
-	?>	
-
-
-
-<?php
  }else{
  	echo "You do not belong here!";
 
