@@ -290,6 +290,20 @@ class RequestForm {
 			header("Location: login.php");
 		} 
 	}
+	public function remarks(){
+		if(isset($_POST['comment'])){
+			$id = $_POST['id'];
+			$reason = $_POST['reason'];
+			$conn = $this->openConnection();
+			$stmt = $conn->prepare("INSERT INTO formdata(reason) VALUES(:reason) WHERE id = :id");
+			$stmt->execute(['reason' => $reason, 'id' => $id]);
+		$count = $stmt->rowCount();
+		if ($count > 0) {
+			echo "commented";
+		}
+
+		}
+	}
 
 
 
